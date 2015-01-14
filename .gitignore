@@ -25,6 +25,9 @@ lib-cov
 pids
 logs
 results
+*.err
 
 npm-debug.log
 node_modules
+
+public/dist/*
