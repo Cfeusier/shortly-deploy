@@ -3,9 +3,11 @@ var path = require('path');
 
 var filename = path.join(__dirname, '../db/shortly-dev.sqlite');
 var host = process.env.HOST || '127.0.0.1';
+var database = 'shortlydevdb';
 
 if (process.env.NODE_ENV === 'production') {
   filename = path.join(__dirname, '../db/shortly.sqlite');
+  database = 'shortlydb'
 }
 
 var db = Bookshelf.initialize({
@@ -14,7 +16,7 @@ var db = Bookshelf.initialize({
     host:  host,
     user: 'your_database_user',
     password: 'password',
-    database: 'shortlydb',
+    database: database,
     charset: 'utf8',
     filename: filename
   }
