@@ -1,15 +1,22 @@
 var Bookshelf = require('bookshelf');
 var path = require('path');
 
+var filename = path.join(__dirname, '../db/shortly-dev.sqlite');
+var host = process.env.HOST || '127.0.0.1';
+
+if (process.env.NODE_ENV === 'production') {
+  filename = path.join(__dirname, '../db/shortly.sqlite');
+}
+
 var db = Bookshelf.initialize({
   client: 'sqlite3',
   connection: {
-    host:  process.env.HOST || '127.0.0.1',
+    host:  host,
     user: 'your_database_user',
     password: 'password',
     database: 'shortlydb',
     charset: 'utf8',
-    filename: path.join(__dirname, '../db/shortly.sqlite')
+    filename: filename
   }
 });
 
