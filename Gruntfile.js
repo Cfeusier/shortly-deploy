@@ -64,6 +64,11 @@ module.exports = function(grunt) {
       },
 
       cssmin: {
+        target: {
+          files: {
+            'public/dist/style.min.css': ['public/style.css']
+          }
+        }
       },
 
       watch: {
@@ -120,16 +125,17 @@ grunt.registerTask('server-dev', function (target) {
     ]);
 
   grunt.registerTask('build', [
-    'concat'
-  // ,
-  //   'uglify',
-  //   'jshint',
-  //   'mochaTest'
+    'concat',
+    'uglify',
+    'cssmin'
+  //   'jshint', // throw error if bad
+  //   'mochaTest' // throw error if bad
   ]);
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
-      // add your production server task here
+      // add
+      // commit
       // push to server
     } else {
       grunt.task.run([ 'server-dev' ]);
