@@ -50,16 +50,10 @@ module.exports = function(grunt) {
     },
 
     jshint: {
-      files: [
-        // Add filespec list here
-        ],
+      files: ['Gruntfile.js', 'public/client/**/*.js', 'test/**/*.js'],
         options: {
-          force: 'true',
           jshintrc: '.jshintrc',
-          ignores: [
-          'public/lib/**/*.js',
-          'public/dist/**/*.js'
-          ]
+          ignores: ['public/lib/**/*.js', 'public/dist/**/*.js']
         }
       },
 
@@ -90,6 +84,10 @@ module.exports = function(grunt) {
 
       shell: {
         prodServer: {
+          command: ['git push azure master']
+        },
+        gitHub: {
+          command: ['git push origin master']
         }
       },
     });
@@ -120,32 +118,30 @@ grunt.registerTask('server-dev', function (target) {
   // Main grunt tasks
   ////////////////////////////////////////////////////
 
-  grunt.registerTask('test', [
-    'mochaTest'
-    ]);
+  grunt.registerTask('test', ['mochaTest']);
+
+  grunt.registerTask('local-shell', ['shell:gitHub']);
+
+  grunt.registerTask('prod-shell', ['shell:prodServer']);
 
   grunt.registerTask('build', [
     'concat',
     'uglify',
     'cssmin'
-  //   'jshint', // throw error if bad
-  //   'mochaTest' // throw error if bad
   ]);
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
-      // add
-      // commit
-      // push to server
+      grunt.task.run(['prod-shell'])
     } else {
-      grunt.task.run([ 'server-dev' ]);
+      grunt.task.run(['local-shell', 'server-dev']);
     }
   });
 
   grunt.registerTask('deploy', [
-    // add your deploy tasks here
-    // 'build',
-    // 'upload'
-    ]);
-
+    'jshint',
+    'build',
+    'test',
+    'upload'
+  ]);
 };
