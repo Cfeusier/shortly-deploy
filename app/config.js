@@ -9,7 +9,6 @@ if (process.env.NODE_ENV === 'production') {
 
 mongoose.connect(database);
 var db = mongoose.connection;
-
 db.on('error', console.error.bind(console, 'connection error:'));
 db.on('open', function() { console.log('mongo hooked'); });
 
