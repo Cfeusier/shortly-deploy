@@ -132,7 +132,7 @@ grunt.registerTask('build', [
 
 grunt.registerTask('upload', function(n) {
   if(grunt.option('prod')) {
-    grunt.task.run(['push-prod'])
+    grunt.task.run(['push-prod']);
   } else {
     grunt.task.run(['push-dev', 'server-dev']);
   }
