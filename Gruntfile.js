@@ -51,46 +51,46 @@ module.exports = function(grunt) {
 
     jshint: {
       files: ['Gruntfile.js', 'public/client/**/*.js', 'test/**/*.js'],
-        options: {
-          jshintrc: '.jshintrc',
-          ignores: ['public/lib/**/*.js', 'public/dist/**/*.js']
-        }
-      },
+      options: {
+        jshintrc: '.jshintrc',
+        ignores: ['public/lib/**/*.js', 'public/dist/**/*.js']
+      }
+    },
 
-      cssmin: {
-        target: {
-          files: {
-            'public/dist/style.min.css': ['public/style.css']
-          }
+    cssmin: {
+      target: {
+        files: {
+          'public/dist/style.min.css': ['public/style.css']
         }
-      },
+      }
+    },
 
-      watch: {
-        scripts: {
-          files: [
-          'public/client/**/*.js',
-          'public/lib/**/*.js',
-          ],
-          tasks: [
-          'concat',
-          'uglify'
-          ]
-        },
-        css: {
-          files: 'public/*.css',
-          tasks: ['cssmin']
-        }
+    watch: {
+      scripts: {
+        files: [
+        'public/client/**/*.js',
+        'public/lib/**/*.js',
+        ],
+        tasks: [
+        'concat',
+        'uglify'
+        ]
       },
+      css: {
+        files: 'public/*.css',
+        tasks: ['cssmin']
+      }
+    },
 
-      shell: {
-        prodServer: {
-          command: 'git push azure master'
-        },
-        gitHub: {
-          command: 'git push origin master'
-        }
+    shell: {
+      prodServer: {
+        command: 'git push azure master'
       },
-    });
+      gitHub: {
+        command: 'git push origin master'
+      }
+    },
+  });
 
 grunt.loadNpmTasks('grunt-contrib-uglify');
 grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -102,46 +102,46 @@ grunt.loadNpmTasks('grunt-shell');
 grunt.loadNpmTasks('grunt-nodemon');
 
 grunt.registerTask('server-dev', function (target) {
-    // Running nodejs in a different process and displaying output on the main console
-    var nodemon = grunt.util.spawn({
-     cmd: 'grunt',
-     grunt: true,
-     args: 'nodemon'
-   });
-    nodemon.stdout.pipe(process.stdout);
-    nodemon.stderr.pipe(process.stderr);
+  // Running nodejs in a different process and displaying output on the main console
+  var nodemon = grunt.util.spawn({
+   cmd: 'grunt',
+   grunt: true,
+   args: 'nodemon'
+ });
+  nodemon.stdout.pipe(process.stdout);
+  nodemon.stderr.pipe(process.stderr);
 
-    grunt.task.run([ 'watch' ]);
-  });
+  grunt.task.run([ 'watch' ]);
+});
 
-  ////////////////////////////////////////////////////
-  // Main grunt tasks
-  ////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+// Main grunt tasks
+////////////////////////////////////////////////////
 
-  grunt.registerTask('test', ['mochaTest']);
+grunt.registerTask('test', ['mochaTest']);
 
-  grunt.registerTask('local-shell', ['shell:gitHub']);
+grunt.registerTask('local-shell', ['shell:gitHub']);
 
-  grunt.registerTask('prod-shell', ['shell:prodServer']);
+grunt.registerTask('prod-shell', ['shell:prodServer']);
 
-  grunt.registerTask('build', [
-    'concat',
-    'uglify',
-    'cssmin'
+grunt.registerTask('build', [
+  'concat',
+  'uglify',
+  'cssmin'
   ]);
 
-  grunt.registerTask('upload', function(n) {
-    if(grunt.option('prod')) {
-      grunt.task.run(['prod-shell'])
-    } else {
-      grunt.task.run(['local-shell', 'server-dev']);
-    }
-  });
+grunt.registerTask('upload', function(n) {
+  if(grunt.option('prod')) {
+    grunt.task.run(['prod-shell'])
+  } else {
+    grunt.task.run(['local-shell', 'server-dev']);
+  }
+});
 
-  grunt.registerTask('deploy', [
-    'jshint',
-    'build',
-    'test',
-    'upload'
+grunt.registerTask('deploy', [
+  'jshint',
+  'build',
+  'test',
+  'upload'
   ]);
 };
