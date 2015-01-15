@@ -33,64 +33,77 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      options: {
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+      },
+      js: {
+        files: {
+          'public/dist/<%= pkg.name %>.min.js': ['public/dist/<%= pkg.name %>.js']
+        }
+      },
+      vendor: {
+        files: {
+          'public/dist/vendors.min.js': ['public/dist/vendors.js']
+        }
+      }
     },
 
     jshint: {
       files: [
         // Add filespec list here
-      ],
-      options: {
-        force: 'true',
-        jshintrc: '.jshintrc',
-        ignores: [
+        ],
+        options: {
+          force: 'true',
+          jshintrc: '.jshintrc',
+          ignores: [
           'public/lib/**/*.js',
           'public/dist/**/*.js'
-        ]
-      }
-    },
+          ]
+        }
+      },
 
-    cssmin: {
-    },
+      cssmin: {
+      },
 
-    watch: {
-      scripts: {
-        files: [
+      watch: {
+        scripts: {
+          files: [
           'public/client/**/*.js',
           'public/lib/**/*.js',
-        ],
-        tasks: [
+          ],
+          tasks: [
           'concat',
           'uglify'
-        ]
+          ]
+        },
+        css: {
+          files: 'public/*.css',
+          tasks: ['cssmin']
+        }
       },
-      css: {
-        files: 'public/*.css',
-        tasks: ['cssmin']
-      }
-    },
 
-    shell: {
-      prodServer: {
-      }
-    },
-  });
+      shell: {
+        prodServer: {
+        }
+      },
+    });
 
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
-  grunt.loadNpmTasks('grunt-mocha-test');
-  grunt.loadNpmTasks('grunt-shell');
-  grunt.loadNpmTasks('grunt-nodemon');
+grunt.loadNpmTasks('grunt-contrib-uglify');
+grunt.loadNpmTasks('grunt-contrib-jshint');
+grunt.loadNpmTasks('grunt-contrib-watch');
+grunt.loadNpmTasks('grunt-contrib-concat');
+grunt.loadNpmTasks('grunt-contrib-cssmin');
+grunt.loadNpmTasks('grunt-mocha-test');
+grunt.loadNpmTasks('grunt-shell');
+grunt.loadNpmTasks('grunt-nodemon');
 
-  grunt.registerTask('server-dev', function (target) {
+grunt.registerTask('server-dev', function (target) {
     // Running nodejs in a different process and displaying output on the main console
     var nodemon = grunt.util.spawn({
-         cmd: 'grunt',
-         grunt: true,
-         args: 'nodemon'
-    });
+     cmd: 'grunt',
+     grunt: true,
+     args: 'nodemon'
+   });
     nodemon.stdout.pipe(process.stdout);
     nodemon.stderr.pipe(process.stderr);
 
@@ -103,7 +116,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', [
     'mochaTest'
-  ]);
+    ]);
 
   grunt.registerTask('build', [
     'concat'
@@ -126,6 +139,6 @@ module.exports = function(grunt) {
     // add your deploy tasks here
     // 'build',
     // 'upload'
-  ]);
+    ]);
 
 };
