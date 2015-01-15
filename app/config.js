@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 
-var host = process.env.HOST || '127.0.0.1';
 var database = 'mongodb://127.0.0.1/shortlyDevDb';
 
 if (process.env.NODE_ENV === 'production') {

@@ -16,11 +16,14 @@ User.prototype.comparePassword = function(attemptedPassword, callback) {
 };
 
 UserSchema.pre('save', function(next) {
-  var cipher = Promise.promisify(bcrypt.hash);
-  return cipher(this.password, null, null).bind(this).then(function(hash) {
-    this.password = hash;
-    next();
-  });
+  bcrypt.hash(this.password, null, null, function(err, hash) {
+    if (err) {
+      next(err);
+    } else {
+      this.password = hash;
+      next(null, hash);
+    }
+  }.bind(this));
 });
 
 module.exports = User;
