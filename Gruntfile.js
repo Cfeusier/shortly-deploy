@@ -120,9 +120,9 @@ grunt.registerTask('server-dev', function (target) {
 
 grunt.registerTask('test', ['mochaTest']);
 
-grunt.registerTask('local-shell', ['shell:gitHub']);
+grunt.registerTask('push-dev', ['shell:gitHub']);
 
-grunt.registerTask('prod-shell', ['shell:prodServer']);
+grunt.registerTask('push-prod', ['shell:prodServer']);
 
 grunt.registerTask('build', [
   'concat',
@@ -132,9 +132,9 @@ grunt.registerTask('build', [
 
 grunt.registerTask('upload', function(n) {
   if(grunt.option('prod')) {
-    grunt.task.run(['prod-shell'])
+    grunt.task.run(['push-prod'])
   } else {
-    grunt.task.run(['local-shell', 'server-dev']);
+    grunt.task.run(['push-dev', 'server-dev']);
   }
 });
 
